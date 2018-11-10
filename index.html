@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <style>
+    button {
+      color: rebeccapurple;
+      font-family: sans-serif;
+      font-weight: bold;
+      padding: .5rem;
+      background-color: #ccc;
+      box-shadow: 2px 2px 2px #ccc;
+      display: block;
+      margin: 1em;
+    }
+
+    textarea {
+      width: 90%;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="select-directory">Choose a directory</button>
+  <textarea id="selectedItem"></textarea>
+
+  <button id="select-file">Choose an image file</button>
+
+  <button id="save-file">Save</button>
+
+  <h2>Message Box</h2>
+  <button id="info">Info Type Dialog</button>
+  <button id="error">Error Type Dialog</button>
+  <button id="question">Question Type Dialog</button>
+  <button id="none">None Type Dialog</button>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</body>
+
 </html>

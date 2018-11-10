@@ -1,13 +1,84 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, nativeImage } = require('electron')
+const fs = require('fs')
+
+ipcMain.on('open-directory-dialog', (event) => {
+  dialog.showOpenDialog(mainWindow, {
+    title: 'Where you wan shit',
+    properties: ['openDirectory'],
+    buttonLabel: 'Shit',
+    // defaultPath: ''
+  }, (files) => {
+    if (files) event.sender.send('selectedItem', files)
+  })
+})
+
+ipcMain.on('open-file-dialog', (event) => {
+  let startPath = ''
+  if (process.platform === 'darwin') {
+    startPath = '/Users/<username>/Documents/'
+  }
+
+  dialog.showOpenDialog(mainWindow, {
+    title: 'Select a workspace',
+    properties: ['openFile'],
+    defaultPath: startPath,
+    buttonLabel: 'Select ...',
+    filters: [
+      { name: 'Images', extensions: ['jpg', 'png', 'gif'] }
+    ]
+  }, (files) => {
+    if (files) event.sender.send('selectedItem', files)
+  })
+})
+
+ipcMain.on('save-file-dialog', (event) => {
+  dialog.showSaveDialog(mainWindow, {
+    title: 'Save file...',
+    defaultPath: '/Users/<username>/Documents/highscores.txt',
+    buttonLabel: "Save",
+    filters: [
+      { name: 'Text', extensions: ['txt'] }
+    ]
+  }, (file) => {
+    console.log(file)
+    if (file) {
+      let theData = "Chris,10000"
+      fs.writeFile(file, theData, function (err) {
+        if (err === null) {
+          console.log('It\'s saved!');
+        } else {
+          //ERROR OCCURRED
+          console.log(err);
+        }
+      });
+    }
+  })
+})
+
+ipcMain.on('display-dialog', function (event, dialogType) {
+  console.log(dialogType)
+  dialog.showMessageBox(mainWindow, {
+    buttons: ['Save', 'Cancel', 'Don\'t Save'],
+    defaultId: 0,
+    cancelId: 1,
+    title: 'Save Score',
+    message: 'Backup your score file?',
+    detail: 'Message detail',
+    type: dialogType
+  }, (index) => {
+    console.log(index)
+  })
+})
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({ width: 800, height: 600 })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -22,6 +93,8 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  dialog.showErrorBox('Frak!', 'Cyclons reported on the port hanger deck!')
 }
 
 // This method will be called when Electron has finished
