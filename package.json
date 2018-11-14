@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "electron-dock-example.",
+  "version": "0.0.1",
+  "description": "A sample Electron application to demonstrate macOS dock features.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -9,13 +9,13 @@
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
+    "macOs",
+    "dock",
+    "example",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Ibanga Enoobong Ime",
+  "license": "MIT",
   "devDependencies": {
     "electron": "^3.0.4"
   }
