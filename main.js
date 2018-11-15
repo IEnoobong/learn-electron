@@ -1,13 +1,36 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let splashWindow
 
-function createWindow () {
+function createSplashWindow() {
+  splashWindow = new BrowserWindow({
+    width: 320,
+    height: 240,
+    frame: false,
+    resizable: false,
+    backgroundColor: '#FFF',
+    alwaysOnTop: true,
+    show: false
+  })
+
+  splashWindow.loadFile('splash.html')
+
+  splashWindow.on('closed', () => {
+    splashWindow = null
+  })
+
+  splashWindow.once('ready-to-show', () => {
+    splashWindow.show()
+  })
+}
+
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({ width: 800, height: 600, show: false })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -27,7 +50,7 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createSplashWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -48,3 +71,18 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('get-version', event => {
+  console.log('app version: ', app.getVersion())
+  event.sender.send('set-version', app.getVersion())
+})
+
+// MAIN WINDOW: FINISHED LOADING
+ipcMain.on('app-init', event => {
+  if (splashWindow) {
+    setTimeout(() => {
+      splashWindow.close()
+    }, 2000)
+  }
+  mainWindow.show()
+})
