@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Are You Online?</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Are You Online?</h1>
+      <div class="button-holder">
+        <button id="checkStatusButton" type="button">Check Status</button>
+      </div>
+    </header>
+    <section class="main">
+      <h2 id="h2-online">You are Online</h2>
+      <h2 id="h2-offline">You are NOT Online</h2>
+    </section>
+    <footer></footer>
+  </div>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./renderer.js')
+  </script>
+</body>
+
 </html>
